@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout Patron Loan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .card { background: white; padding: 35px 40px; border-radius: 12px; width: 440px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+        h2 { margin-top: 0; margin-bottom: 20px; font-size: 20px; font-weight: 700; color: #0f172a; text-align: center; }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 13px; color: #334155; }
+        input, select { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-family: inherit; font-size: 14px; }
+        .btn-submit { width: 100%; background-color: #2563eb; color: white; border: none; padding: 12px; border-radius: 6px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 15px; }
+        .btn-submit:hover { background-color: #1d4ed8; }
+        .back-link { display: block; text-align: center; margin-top: 15px; color: #64748b; text-decoration: none; font-size: 13px; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Issue Patron E-Book Loan</h2>
+    <form th:action="@{/loan/checkout-save}" method="post">
+        <div class="form-group">
+            <label>Loan ID</label>
+            <input type="number" name="loanId" placeholder="e.g. 5" required />
+        </div>
+        <div class="form-group">
+            <label>Select Book License</label>
+            <select name="licenseId" required>
+                <option th:each="b : ${licenses}" th:value="${b.licenseId}"
+                        th:text="${b.bookTitle + ' (Available: ' + b.availableCopies + ' seats)'}">
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Member / Student Name</label>
+            <input type="text" name="memberName" placeholder="e.g. Ramki" required />
+        </div>
+
+        <button type="submit" class="btn-submit">Confirm Checkout (14-Day Expiry)</button>
+        <a th:href="@{/loans-page}" class="back-link">&larr; Return to Active Loans</a>
+    </form>
+</div>
+
+</body>
+</html>

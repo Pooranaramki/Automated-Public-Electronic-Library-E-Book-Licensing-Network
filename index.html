@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automated Public Electronic Library &amp; E-Book Licensing Network</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --sidebar-bg: #0f172a;
+            --sidebar-border: #1e293b;
+            --bg-body: #f8fafc;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-body); color: var(--text-dark); }
+
+        /* Full Navigation Bar */
+        .top-navbar {
+            background-color: var(--sidebar-bg);
+            height: 72px;
+            padding: 0 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--sidebar-border);
+            width: 100%;
+        }
+
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .brand-logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+        }
+
+        .brand-titles {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-brand-title {
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+        }
+
+        .sub-brand-title {
+            color: #94a3b8;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-item {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item:hover { color: #ffffff; background-color: #1e293b; }
+        .nav-item.active { color: #ffffff; background-color: #1e293b; }
+
+        /* Full width content */
+        .page-container {
+            width: 100%;
+            padding: 2.5rem 3rem;
+        }
+
+        .hero-banner {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+
+        .hero-title h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+        }
+
+        .hero-title p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        .action-button-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-act {
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-blue { background-color: var(--primary); color: white; }
+        .btn-blue:hover { background-color: var(--primary-dark); }
+        .btn-outline { background-color: #ffffff; color: var(--text-dark); border-color: var(--border-color); }
+        .btn-outline:hover { background-color: #f1f5f9; }
+
+        /* Core Metrics */
+        .metrics-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .stat-box {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+
+        .stat-title {
+            font-size: 11.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--text-muted);
+        }
+
+        .stat-number {
+            font-size: 26px;
+            font-weight: 800;
+            margin: 10px 0 4px;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+        }
+
+        .stat-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Modules Grid */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .module-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .module-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .module-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .module-link {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .module-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<header class="top-navbar">
+    <a th:href="@{/}" class="brand-box">
+        <div class="brand-logo-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                <circle cx="12" cy="10" r="2"></circle>
+            </svg>
+        </div>
+        <div class="brand-titles">
+            <span class="main-brand-title">Automated Public Electronic Library &amp; E-Book Licensing Network</span>
+            <span class="sub-brand-title">Enterprise Rights &amp; Ledger Platform</span>
+        </div>
+    </a>
+    <nav class="nav-menu">
+        <a th:href="@{/}" class="nav-item active">Overview</a>
+        <a th:href="@{/licenses-page}" class="nav-item">E-Book Licenses</a>
+        <a th:href="@{/loans-page}" class="nav-item">Active Loans</a>
+        <a th:href="@{/finance-page}" class="nav-item">Financial Ledgers</a>
+    </nav>
+</header>
+
+<main class="page-container">
+
+    <div class="hero-banner">
+        <div class="hero-title">
+            <h1>Digital Rights &amp; Public Library Operations Console</h1>
+            <p>Admin, Accountant &amp; Patron workflows conforming to double-entry ledger specifications</p>
+        </div>
+        <div class="action-button-group">
+            <a th:href="@{/license/add}" class="btn-act btn-blue">+ Issue Book License</a>
+            <a th:href="@{/loan/checkout-form}" class="btn-act btn-outline">+ Checkout Loan</a>
+            <a th:href="@{/transaction/add}" class="btn-act btn-outline">+ Create Invoice/Bill</a>
+        </div>
+    </div>
+
+    <!-- Live Dynamic Metrics from PS Requirements -->
+    <div class="metrics-container">
+        <div class="stat-box">
+            <div class="stat-title">Subscription Revenue</div>
+            <div class="stat-number" th:text="'₹' + ${#numbers.formatDecimal(pnlReport['InstitutionalSubscriptionRevenue'], 1, 'COMMA', 2, 'POINT')}">₹0.00</div>
+            <div class="stat-desc">Participating school district billings</div>
+        </div>
+
+        <div class="stat-box">
+            <div class="stat-title">Publisher Royalties</div>
+            <div class="stat-number" th:text="'₹' + ${#numbers.formatDecimal(pnlReport['PublisherLicensingRoyaltyExpenses'], 1, 'COMMA', 2, 'POINT')}">₹0.00</div>
+            <div class="stat-desc">Digital copyright liabilities paid</div>
+        </div>
+
+        <div class="stat-box">
+            <div class="stat-title">Operating P&amp;L Margin</div>
+            <div class="stat-number" style="color: #16a34a;" th:text="'₹' + ${#numbers.formatDecimal(pnlReport['NetProfitOrLoss'], 1, 'COMMA', 2, 'POINT')}">₹0.00</div>
+            <div class="stat-desc">Net surplus (Revenue &minus; Expenses)</div>
+        </div>
+
+        <div class="stat-box">
+            <div class="stat-title">STEM Division Budget</div>
+            <div class="stat-number" style="color: #2563eb;" th:text="'₹' + ${#numbers.formatDecimal(budgetReport['RemainingLicensingBudgetVariance'], 1, 'COMMA', 2, 'POINT')}">₹0.00</div>
+            <div class="stat-desc">Remaining planned variance</div>
+        </div>
+    </div>
+
+    <!-- Core Functional Modules from Problem Statement -->
+    <div class="modules-grid">
+        <div class="module-card">
+            <div>
+                <h3>1. Publisher E-Book Licenses</h3>
+                <p>Register publisher copyright contracts, configure concurrent access seat quotas, and maintain inventory records.</p>
+            </div>
+            <a th:href="@{/licenses-page}" class="module-link">Open License Directory &rarr;</a>
+        </div>
+
+        <div class="module-card">
+            <div>
+                <h3>2. Patron Concurrent Checkouts</h3>
+                <p>Process member e-book borrowing, enforce concurrent availability caps, and monitor 14-day auto-expiry loans.</p>
+            </div>
+            <a th:href="@{/loans-page}" class="module-link">Open Loan Monitoring &rarr;</a>
+        </div>
+
+        <div class="module-card">
+            <div>
+                <h3>3. Institutional Invoicing &amp; Bills</h3>
+                <p>Manage school district annual digital subscriptions, vendor publisher royalty bills, and double-entry journals.</p>
+            </div>
+            <a th:href="@{/finance-page}" class="module-link">Open Financial Ledger &rarr;</a>
+        </div>
+    </div>
+
+</main>
+
+</body>
+</html>

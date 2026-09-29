@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>License Inventory - National E-Library Network</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-dark: #1e3a8a;
+            --surface: #ffffff;
+            --bg: #f8fafc;
+            --border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text-main); }
+
+        .navbar {
+            background-color: #0b132b;
+            padding: 0 3rem;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #1c2541;
+            width: 100%;
+        }
+
+        .brand-container { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .brand-logo { width: 32px; height: 32px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 16px; }
+        .brand-title { color: #ffffff; font-size: 16px; font-weight: 600; }
+        .nav-items { display: flex; gap: 8px; }
+        .nav-link { color: #94a3b8; text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 16px; border-radius: 6px; }
+        .nav-link:hover { color: #ffffff; background-color: #1c2541; }
+        .nav-link.active { color: #ffffff; background-color: #1e293b; }
+
+        .wrapper { width: 100%; padding: 2.5rem 3rem; }
+        .page-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; }
+        .page-title h1 { font-size: 24px; font-weight: 700; color: var(--text-main); }
+        .page-title p { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+
+        .btn { font-size: 13px; font-weight: 600; padding: 10px 18px; border-radius: 6px; text-decoration: none; display: inline-flex; align-items: center; }
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-primary:hover { background-color: var(--primary-dark); }
+
+        .table-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+            width: 100%;
+        }
+
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        thead { background-color: #f8fafc; border-bottom: 1px solid var(--border); }
+        th { padding: 14px 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); }
+        td { padding: 16px 20px; font-size: 14px; border-bottom: 1px solid var(--border); color: var(--text-main); }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background-color: #f8fafc; }
+
+        .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .tag-active { background-color: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+        .tag-expired { background-color: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+        .tag-renewed { background-color: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+
+        .action-link { text-decoration: none; font-weight: 600; font-size: 13px; margin-right: 14px; }
+        .link-edit { color: #2563eb; }
+        .link-delete { color: #dc2626; }
+    </style>
+</head>
+<body>
+
+<header class="navbar">
+    <a th:href="@{/}" class="brand-container">
+        <div class="brand-logo">N</div>
+        <span class="brand-title">National E-Library Licensing Network</span>
+    </a>
+    <nav class="nav-items">
+        <a th:href="@{/}" class="nav-link">Dashboard</a>
+        <a th:href="@{/licenses-page}" class="nav-link active">Digital Licenses</a>
+        <a th:href="@{/loans-page}" class="nav-link">Active Checkouts</a>
+        <a th:href="@{/finance-page}" class="nav-link">Financial Ledgers</a>
+    </nav>
+</header>
+
+<main class="wrapper">
+    <div class="page-header">
+        <div class="page-title">
+            <h1>Digital Publisher License Inventory</h1>
+            <p>Authorized E-Book Editions, Concurrent Access Caps, and Repository Quotas</p>
+        </div>
+        <a th:href="@{/license/add}" class="btn btn-primary">Provision New License</a>
+    </div>
+
+    <div class="table-card">
+        <table>
+            <thead>
+            <tr>
+                <th>License UID</th>
+                <th>Digital Title</th>
+                <th>Primary Author</th>
+                <th>Classification</th>
+                <th>Concurrent Quota</th>
+                <th>Lifecycle Status</th>
+                <th>Management</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="lic : ${licenses}">
+                <td style="font-family: monospace; font-weight: 600;" th:text="'LIC-' + ${lic.licenseId}"></td>
+                <td style="font-weight: 600;" th:text="${lic.bookTitle}"></td>
+                <td th:text="${lic.author}"></td>
+                <td th:text="${lic.category}"></td>
+                <td style="font-weight: 600; color: #1e40af;" th:text="${lic.availableCopies} + ' seats'"></td>
+                <td>
+                        <span th:class="'tag ' + (${lic.licenseStatus == 'Active' ? 'tag-active' : (lic.licenseStatus == 'Renewed' ? 'tag-renewed' : 'tag-expired')})"
+                              th:text="${lic.licenseStatus}"></span>
+                </td>
+                <td>
+                    <a th:href="@{/license/edit/{id}(id=${lic.licenseId})}" class="action-link link-edit">Modify</a>
+                    <a th:href="@{/license/delete/{id}(id=${lic.licenseId})}" class="action-link link-delete" onclick="return confirm('Revoke this publisher license?')">Revoke</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+</body>
+</html>
